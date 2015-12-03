@@ -6,7 +6,9 @@
         email: '',
         password: '',
         emailValid: null,
-        passwordValid: null
+        passwordValid: null,
+        loginSuccess: false,
+        loginError: false
       };
     },
 
@@ -36,6 +38,16 @@
 
       this.setState({password: password, passwordValid: valid});
     },
+    handleLoginSuccess: function(data) {
+      console.log(data);
+      this.setState({loginSuccess: true, loginError: false});
+    },
+    handleLoginError: function(xhr, status, err) {
+      console.log(xhr);
+      console.log(status);
+      console.log(err);
+      this.setState({loginSuccess: false, loginError: true});
+    },
     handleSubmit: function(e) {
       e.preventDefault();
 
@@ -47,13 +59,13 @@
           type: 'POST',
           data: data,
           success: function(data) {
-            console.log(data);
+            this.handleLoginSuccess(data);
           }.bind(this),
           error: function(xhr, status, err) {
-            console.log(xhr);
-            console.log(status, err);
+            this.handleLoginError(xhr, status, err);
           }.bind(this)
         });
+        this.setState({email: '', password: '', emailValid: null, passwordValid: null});
       }
     },
 
@@ -104,6 +116,9 @@
             value="Log in"
             formNoValidate
           />
+          <br />
+          {this.state.loginSuccess ? <div className="alert alert-success">Successfully logged in! :D</div> : null}
+          {this.state.loginError ? <div className="alert alert-danger">There was a problem logging in. :(</div> : null}
         </form>
       );
     }
