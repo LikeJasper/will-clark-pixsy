@@ -1,7 +1,13 @@
-(function($) {
+(function() {
+
   var LoginForm = React.createClass({
     getInitialState: function() {
-      return {email: '', password: ''};
+      return {
+        email: '',
+        password: '',
+        emailValid: null,
+        passwordValid: null
+      };
     },
 
     passwordMinLength: 6,
@@ -18,75 +24,70 @@
       return true;
     },
 
-    updateGroupValidationClass: function($group, valid) {
-      if (valid) {
-        $group.removeClass('has-error').addClass('has-success');
-      } else {
-        $group.removeClass('has-success').addClass('has-error');
-      }
-    },
-
     handleEmailChange: function(e) {
       var email = e.target.value;
-      this.setState({email: email});
+      var valid = this.validateEmail(email);
 
-      this.updateGroupValidationClass($('#email-group'), this.validateEmail(email));
+      this.setState({email: email, emailValid: valid});
     },
     handlePasswordChange: function(e) {
       var password = e.target.value;
-      this.setState({password: password});
+      var valid = this.validatePassword(password);
 
-      this.updateGroupValidationClass($('#password-group'), this.validatePassword(password));
+      this.setState({password: password, passwordValid: valid});
     },
     handleSubmit: function(e) {
       e.preventDefault();
-      var inputs = e.target.children;
-      var email = inputs.email.value.trim();
-      var password = inputs.password.value;
-      var validEmail = this.validateEmail(email);
-      var validPassword = this.validatePassword(password);
 
-      if (validEmail && validPassword) {
+      if (this.state.emailValid && this.state.passwordValid) {
         // TODO: Send to server
         console.log("Sending valid email and password to server...");
-      } else {
-        if (!validEmail) {
-          // TODO: Display email validation help
-          console.log("Displaying email validation help...");
-        }
-        if (!validPassword) {
-          // TODO: Display password validation help
-          console.log("Displaying password validation help...");
-        }
       }
+    },
+
+    getGroupClassName: function(groupName) {
+      var className = "form-group";
+      var valid = groupName === 'email' ? this.state.emailValid : this.state.passwordValid;
+
+      if (valid) {
+        className += " has-success";
+      } else if (valid === false) {
+        className += " has-error";
+      }
+
+      return className;
     },
 
     render: function() {
       return (
         <form className="login-form" onSubmit={this.handleSubmit}>
-          <div id="email-group" className="form-group">
+          <div id="email-group" className={this.getGroupClassName('email')}>
             <input
               className="form-control"
               name="email"
               type="email"
+              autoComplete="off"
               placeholder="Your email address"
               value={this.state.email}
               onChange={this.handleEmailChange}
             />
+            {this.state.emailValid === false ? <span className="help-block">Please enter a valid email address.</span> : null}
           </div>
-          <div id="password-group" className="form-group">
+          <div id="password-group" className={this.getGroupClassName('password')}>
             <input
               className="form-control"
               name="password"
               type="password"
+              autoComplete="off"
               placeholder="Your password"
               value={this.state.password}
               minLength={this.passwordMinLength}
               onChange={this.handlePasswordChange}
             />
+            {this.state.passwordValid === false ? <span className="help-block">Your password must be at least 6 characters.</span> : null}
           </div>
           <input
-            className="btn btn-primary"
+            className="btn btn-primary center-block"
             type="submit"
             value="Log in"
             formNoValidate
@@ -100,4 +101,5 @@
     <LoginForm />,
     document.getElementById('content')
   );
-}(jQuery));
+
+}());
