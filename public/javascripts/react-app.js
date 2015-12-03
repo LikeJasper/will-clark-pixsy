@@ -8,8 +8,21 @@
         emailValid: null,
         passwordValid: null,
         loginSuccess: false,
-        loginError: false
+        loginError: false,
+        errorMsg: null
       };
+    },
+    getGroupClassName: function(groupName) {
+      var className = "form-group";
+      var valid = groupName === 'email' ? this.state.emailValid : this.state.passwordValid;
+
+      if (valid) {
+        className += " has-success";
+      } else if (valid === false) {
+        className += " has-error";
+      }
+
+      return className;
     },
 
     passwordMinLength: 6,
@@ -39,14 +52,11 @@
       this.setState({password: password, passwordValid: valid});
     },
     handleLoginSuccess: function(data) {
-      console.log(data);
       this.setState({loginSuccess: true, loginError: false});
     },
     handleLoginError: function(xhr, status, err) {
-      console.log(xhr);
-      console.log(status);
-      console.log(err);
-      this.setState({loginSuccess: false, loginError: true});
+      var errorMsg = xhr.responseJSON.error;
+      this.setState({loginSuccess: false, loginError: true, errorMsg: errorMsg});
     },
     handleSubmit: function(e) {
       e.preventDefault();
@@ -67,19 +77,6 @@
         });
         this.setState({email: '', password: '', emailValid: null, passwordValid: null});
       }
-    },
-
-    getGroupClassName: function(groupName) {
-      var className = "form-group";
-      var valid = groupName === 'email' ? this.state.emailValid : this.state.passwordValid;
-
-      if (valid) {
-        className += " has-success";
-      } else if (valid === false) {
-        className += " has-error";
-      }
-
-      return className;
     },
 
     render: function() {
@@ -118,7 +115,7 @@
           />
           <br />
           {this.state.loginSuccess ? <div className="alert alert-success">Successfully logged in! :D</div> : null}
-          {this.state.loginError ? <div className="alert alert-danger">There was a problem logging in. :(</div> : null}
+          {this.state.loginError ? <div className="alert alert-danger">{this.state.errorMsg} :(</div> : null}
         </form>
       );
     }
