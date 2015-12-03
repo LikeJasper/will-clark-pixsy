@@ -1,4 +1,7 @@
 var LoginForm = React.createClass({
+  getInitialState: function() {
+    return {email: '', password: ''};
+  },
 
   passwordMinLength: 6,
   validateEmail: function(email) {
@@ -14,6 +17,12 @@ var LoginForm = React.createClass({
     return true;
   },
 
+  handleEmailChange: function(e) {
+    this.setState({email: e.target.value});
+  },
+  handlePasswordChange: function(e) {
+    this.setState({password: e.target.value});
+  },
   handleSubmit: function(e) {
     e.preventDefault();
     var inputs = e.target.children;
@@ -40,18 +49,29 @@ var LoginForm = React.createClass({
   render: function() {
     return (
       <form className="login-form" onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <input
+            className="form-control"
+            name="email"
+            type="email"
+            placeholder="Your email address"
+            value={this.state.email}
+            onChange={this.handleEmailChange}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            className="form-control"
+            name="password"
+            type="password"
+            placeholder="Your password"
+            value={this.state.password}
+            minLength={this.passwordMinLength}
+            onChange={this.handlePasswordChange}
+          />
+        </div>
         <input
-          name="email"
-          type="email"
-          placeholder="Your email address"
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Your password"
-          minLength={this.passwordMinLength}
-        />
-        <input
+          className="btn btn-primary"
           type="submit"
           value="Log in"
           formNoValidate
