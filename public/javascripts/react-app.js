@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 
   var LoginForm = React.createClass({
     getInitialState: function() {
@@ -40,8 +40,20 @@
       e.preventDefault();
 
       if (this.state.emailValid && this.state.passwordValid) {
-        // TODO: Send to server
-        console.log("Sending valid email and password to server...");
+        var data = {email: this.state.email.trim(), password: this.state.password};
+        $.ajax({
+          url: this.props.url,
+          dataType: 'json',
+          type: 'POST',
+          data: data,
+          success: function(data) {
+            console.log(data);
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.log(xhr);
+            console.log(status, err);
+          }.bind(this)
+        });
       }
     },
 
@@ -98,8 +110,8 @@
   });
 
   ReactDOM.render(
-    <LoginForm />,
+    <LoginForm url="/login" />,
     document.getElementById('content')
   );
 
-}());
+}(jQuery));
