@@ -83,28 +83,38 @@
       return (
         <form className="login-form" onSubmit={this.handleSubmit}>
           <div id="email-group" className={this.getGroupClassName('email')}>
-            <input
-              className="form-control"
-              name="email"
-              type="email"
-              autoComplete="off"
-              placeholder="Your email address"
-              value={this.state.email}
-              onChange={this.handleEmailChange}
-            />
+            <div className="input-group">
+              <span className="input-group-addon">
+                <i className="glyphicon glyphicon-envelope"></i>
+              </span>
+              <input
+                className="form-control"
+                name="email"
+                type="email"
+                autoComplete="off"
+                placeholder="Your email address"
+                value={this.state.email}
+                onChange={this.handleEmailChange}
+              />
+            </div>
             {this.state.emailValid === false ? <span className="help-block">Please enter a valid email address.</span> : null}
           </div>
           <div id="password-group" className={this.getGroupClassName('password')}>
-            <input
-              className="form-control"
-              name="password"
-              type="password"
-              autoComplete="off"
-              placeholder="Your password"
-              value={this.state.password}
-              minLength={this.passwordMinLength}
-              onChange={this.handlePasswordChange}
-            />
+            <div className="input-group">
+              <span className="input-group-addon">
+                <i className="glyphicon glyphicon-lock"></i>
+              </span>
+              <input
+                className="form-control"
+                name="password"
+                type="password"
+                autoComplete="off"
+                placeholder="Your password"
+                value={this.state.password}
+                minLength={this.passwordMinLength}
+                onChange={this.handlePasswordChange}
+              />
+            </div>
             {this.state.passwordValid === false ? <span className="help-block">Your password must be at least 6 characters.</span> : null}
           </div>
           <input
