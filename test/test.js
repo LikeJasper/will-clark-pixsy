@@ -12,7 +12,6 @@ describe('POST /login', function() {
 
   describe('with a valid email and password', function() {
     it('should respond with a 200 status code.');
-    it('should return a JSON object with a "data" property with a value of "success"');
   });
 
   describe('with a valid email and invalid password', function() {
