@@ -43,13 +43,13 @@
       var email = e.target.value;
       var valid = this.validateEmail(email);
 
-      this.setState({email: email, emailValid: valid});
+      this.setState({email: email, emailValid: valid, loginSuccess: false, loginError: false});
     },
     handlePasswordChange: function(e) {
       var password = e.target.value;
       var valid = this.validatePassword(password);
 
-      this.setState({password: password, passwordValid: valid});
+      this.setState({password: password, passwordValid: valid, loginSuccess: false, loginError: false});
     },
     handleLoginSuccess: function(data) {
       this.setState({loginSuccess: true, loginError: false});
