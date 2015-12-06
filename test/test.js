@@ -37,38 +37,37 @@ describe('Login routes', function () {
   describe('POST /login', function() {
 
     describe('with a valid email and password', function() {
+      var validOptions = {
+        url: LOGIN_URL,
+        method: 'POST',
+        json: VALID_EMAIL_AND_VALID_PASSWORD
+      };
 
       it('should respond with a 200 status code.', function(done) {
-        request({
-          url: LOGIN_URL,
-          method: 'POST',
-          json: VALID_EMAIL_AND_VALID_PASSWORD
-        }, function(err, res, body) {
+        request(validOptions, function(err, res, body) {
           expect(res.statusCode).to.equal(200);
           done();
         });
       });
+
     });
 
     describe('with a valid email and invalid password', function() {
+      var invalidPasswordOptions = {
+        url: LOGIN_URL,
+        method: 'POST',
+        json: VALID_EMAIL_AND_INVALID_PASSWORD
+      };
 
       it('should respond with a 401 status code.', function(done) {
-        request({
-          url: LOGIN_URL,
-          method: 'POST',
-          json: VALID_EMAIL_AND_INVALID_PASSWORD
-        }, function(err, res, body) {
+        request(invalidPasswordOptions, function(err, res, body) {
           expect(res.statusCode).to.equal(401);
           done();
         });
       });
 
       it('should return a JSON object with an "error" property with a value of "Incorrect password."', function(done) {
-        request({
-          url: LOGIN_URL,
-          method: 'POST',
-          json: VALID_EMAIL_AND_INVALID_PASSWORD
-        }, function(err, res, body) {
+        request(invalidPasswordOptions, function(err, res, body) {
           expect(body).to.eql(INVALID_PASSWORD_RESPONSE);
           done();
         });
@@ -76,24 +75,21 @@ describe('Login routes', function () {
     });
 
     describe('with an invalid email', function() {
+      var invalidEmailOptions = {
+        url: LOGIN_URL,
+        method: 'POST',
+        json: INVALID_EMAIL
+      };
 
       it('should respond with a 401 status code.', function(done) {
-        request({
-          url: LOGIN_URL,
-          method: 'POST',
-          json: INVALID_EMAIL
-        }, function(err, res, body) {
+        request(invalidEmailOptions, function(err, res, body) {
           expect(res.statusCode).to.equal(401);
           done();
         });
       });
 
       it('should return a JSON object with an "error" property with a value of "Email not found."', function(done) {
-        request({
-          url: LOGIN_URL,
-          method: 'POST',
-          json: INVALID_EMAIL
-        }, function(err, res, body) {
+        request(invalidEmailOptions, function(err, res, body) {
           expect(body).to.eql(INVALID_EMAIL_RESPONSE);
           done();
         });
