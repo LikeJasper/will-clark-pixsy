@@ -20,7 +20,8 @@ var INVALID_EMAILS = [
   {email: 'ansel@adams.co.uk', password: ''},
   {email: 'ansel@adams.co.uk', password: 'Yosemite'},
   {email: '', password: 'Yosemite'},
-  {password: 'Yosemite'}
+  {password: 'Yosemite'},
+  {}
 ];
 
 var INVALID_EMAIL_RESPONSE = {error: 'Email not found.'};
