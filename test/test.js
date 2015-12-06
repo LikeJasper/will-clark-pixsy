@@ -5,7 +5,8 @@ var request = require('request');
 var getLogin = require('../routes/login/getLogin').getLogin;
 var postLogin = require('../routes/login/postLogin').postLogin;
 
-var LOGIN_URL = 'http://localhost:3000/login';
+var server = require('../test-server.js');
+var LOGIN_URL = 'http://localhost:4000/login';
 
 var VALID_EMAIL_AND_VALID_PASSWORD = {email: 'ansel@adams.com', password: 'Yosemite'};
 var VALID_EMAIL_AND_INVALID_PASSWORDS = [
@@ -28,6 +29,14 @@ var INVALID_EMAIL_RESPONSE = {error: 'Email not found.'};
 var INVALID_PASSWORD_RESPONSE = {error: 'Incorrect password.'};
 
 describe('Login routes', function () {
+
+  before(function() {
+    server.listen(4000);
+  });
+
+  after(function() {
+    server.close();
+  });
 
   describe('GET /login', function() {
 
