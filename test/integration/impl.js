@@ -12,6 +12,7 @@ module.exports = {
 
   testJsonResponse: function(obj, options, callback) {
     request(options, function(err, res, body) {
+      // .to.eql allows comparison of distinct objects in terms of their attributes
       expect(body).to.eql(obj);
       callback();
     });

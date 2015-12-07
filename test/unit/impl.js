@@ -9,6 +9,7 @@ module.exports = {
 
     req.body = requestParams;
     res.status = sinon.stub();
+    // .status is chainable, needs to pass the response object to .json
     res.status.returnsThis();
     res.json = function() {};
 
@@ -25,11 +26,13 @@ module.exports = {
     var res = {};
 
     req.body = requestParams;
+    // .status is chainable, needs to pass the response object to .json
     res.status = function() { return this; };
     res.json = sinon.stub();
 
     func(req, res, function() {
       setTimeout(function() {
+        // .calledWithExactly does not require the very same object to evaluate to true
         expect(res.json.calledWithExactly(obj)).to.equal(true);
         callback();
       }, 10);

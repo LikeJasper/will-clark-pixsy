@@ -17,10 +17,12 @@ describe('Login routes', function () {
   describe('GET /login', function() {
 
     it('should respond with a 200 status code.', function(done) {
+      // parameters: test status code, request constructor options, callback
       impl.testStatusCode(200, LOGIN_URL, done);
     });
 
     it('should render the html for the login page.', function(done) {
+      // parameters: test string, request constructor options, callback
       impl.testRenderedHtmlContains(testData.HTML_SNIPPET, LOGIN_URL, done);
     });
 
@@ -36,6 +38,7 @@ describe('Login routes', function () {
       };
 
       it('should respond with a 200 status code.', function(done) {
+        // parameters: test status code, request constructor options, callback
         impl.testStatusCode(200, validOptions, done);
       });
 
@@ -51,10 +54,12 @@ describe('Login routes', function () {
         invalidPasswordOptions.json = credentials;
 
         it('should respond with a 401 status code.', function(done) {
+          // parameters: test status code, request constructor options, callback
           impl.testStatusCode(401, invalidPasswordOptions, done);
         });
 
         it('should return a JSON object with an "error" property with a value of "Incorrect password."', function(done) {
+          // parameters: test object, request constructor options, callback
           impl.testJsonResponse(testData.INVALID_PASSWORD_RESPONSE, invalidPasswordOptions, done);
         });
 
@@ -72,10 +77,12 @@ describe('Login routes', function () {
         invalidEmailOptions.json = credentials;
 
         it('should respond with a 401 status code.', function(done) {
+          // parameters: test status code, request constructor options, callback
           impl.testStatusCode(401, invalidEmailOptions, done);
         });
 
         it('should return a JSON object with an "error" property with a value of "Email not found."', function(done) {
+          // parameters: test object, request constructor options, callback
           impl.testJsonResponse(testData.INVALID_EMAIL_RESPONSE, invalidEmailOptions, done);
         });
 
