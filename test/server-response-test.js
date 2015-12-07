@@ -1,7 +1,7 @@
 var chai = require('chai');
 var expect = require('chai').expect;
 var request = require('request');
-var server = require('../test-server.js');
+var server = require('./test-server.js');
 
 var LOGIN_URL = 'http://localhost:4000/login';
 
