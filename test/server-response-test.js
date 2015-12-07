@@ -25,6 +25,27 @@ var INVALID_EMAILS = [
 var INVALID_EMAIL_RESPONSE = {error: 'Email not found.'};
 var INVALID_PASSWORD_RESPONSE = {error: 'Incorrect password.'};
 
+function testStatusCode(statusCode, options, callback) {
+  request(options, function(err, res, body) {
+    expect(res.statusCode).to.equal(statusCode);
+    callback();
+  });
+}
+
+function testJsonResponse(obj, options, callback) {
+  request(options, function(err, res, body) {
+    expect(body).to.eql(obj);
+    callback();
+  });
+}
+
+function testRenderedHtmlContains(str, options, callback) {
+  request(options, function(err, res, body) {
+    expect(body).to.contain(str);
+    callback();
+  });
+}
+
 describe('Login routes', function () {
 
   before(function() {
@@ -38,17 +59,11 @@ describe('Login routes', function () {
   describe('GET /login', function() {
 
     it('should respond with a 200 status code.', function(done) {
-      request(LOGIN_URL, function(err, res, body) {
-        expect(res.statusCode).to.equal(200);
-        done();
-      });
+      testStatusCode(200, LOGIN_URL, done);
     });
 
     it('should render the html for the login page.', function(done) {
-      request(LOGIN_URL, function(err, res, body) {
-        expect(body).to.contain("<title>Will Clark / Pixsy Test Dive</title>");
-        done();
-      });
+      testRenderedHtmlContains("<title>Will Clark / Pixsy Test Dive</title>", LOGIN_URL, done);
     });
 
   });
@@ -63,10 +78,7 @@ describe('Login routes', function () {
       };
 
       it('should respond with a 200 status code.', function(done) {
-        request(validOptions, function(err, res, body) {
-          expect(res.statusCode).to.equal(200);
-          done();
-        });
+        testStatusCode(200, validOptions, done);
       });
 
     });
@@ -81,17 +93,11 @@ describe('Login routes', function () {
         invalidPasswordOptions.json = credentials;
 
         it('should respond with a 401 status code.', function(done) {
-          request(invalidPasswordOptions, function(err, res, body) {
-            expect(res.statusCode).to.equal(401);
-            done();
-          });
+          testStatusCode(401, invalidPasswordOptions, done);
         });
 
         it('should return a JSON object with an "error" property with a value of "Incorrect password."', function(done) {
-          request(invalidPasswordOptions, function(err, res, body) {
-            expect(body).to.eql(INVALID_PASSWORD_RESPONSE);
-            done();
-          });
+          testJsonResponse(INVALID_PASSWORD_RESPONSE, invalidPasswordOptions, done);
         });
 
       });
@@ -108,17 +114,11 @@ describe('Login routes', function () {
         invalidEmailOptions.json = credentials;
 
         it('should respond with a 401 status code.', function(done) {
-          request(invalidEmailOptions, function(err, res, body) {
-            expect(res.statusCode).to.equal(401);
-            done();
-          });
+          testStatusCode(401, invalidEmailOptions, done);
         });
 
         it('should return a JSON object with an "error" property with a value of "Email not found."', function(done) {
-          request(invalidEmailOptions, function(err, res, body) {
-            expect(body).to.eql(INVALID_EMAIL_RESPONSE);
-            done();
-          });
+          testJsonResponse(INVALID_EMAIL_RESPONSE, invalidEmailOptions, done);
         });
 
       });
