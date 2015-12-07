@@ -4,7 +4,7 @@ var router = express.Router();
 var getLogin = require('./login/getLogin.js');
 var postLogin = require('./login/postLogin.js');
 
-router.get('/', getLogin);
-router.post('/', postLogin);
+router.get('/', getLogin, function() {});
+router.post('/', postLogin, function() {});
 
 module.exports = router;
