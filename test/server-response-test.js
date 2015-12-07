@@ -1,11 +1,8 @@
 var chai = require('chai');
 var expect = require('chai').expect;
 var request = require('request');
-
-var getLogin = require('../routes/login/getLogin').getLogin;
-var postLogin = require('../routes/login/postLogin').postLogin;
-
 var server = require('../test-server.js');
+
 var LOGIN_URL = 'http://localhost:4000/login';
 
 var VALID_EMAIL_AND_VALID_PASSWORD = {email: 'ansel@adams.com', password: 'Yosemite'};

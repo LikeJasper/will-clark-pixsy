@@ -3,7 +3,7 @@ var path = require('path');
 
 var PASSWORDS_FILE = path.join(__dirname, '../../passwords.json');
 
-var postLogin = function(req, res) {
+var postLogin = function(req, res, callback) {
   var params = req.body;
   var email = params.email;
   var password = params.password;
@@ -24,6 +24,8 @@ var postLogin = function(req, res) {
     }
 
   });
+
+  callback();
 
 };
 
