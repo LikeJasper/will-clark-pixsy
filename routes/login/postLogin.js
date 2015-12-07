@@ -1,15 +1,19 @@
 var fs = require('fs');
 var path = require('path');
+var Q = require('q');
 
 var PASSWORDS_FILE = path.join(__dirname, '../../passwords.json');
 
-var postLogin = function(req, res, callback) {
+var postLogin = function(req, res) {
+  var deferred = Q.defer();
+
   var params = req.body;
   var email = params.email;
   var password = params.password;
 
   fs.readFile(PASSWORDS_FILE, function(err, data) {
     if (err) {
+      deferred.reject(new Error(err));
       console.error(err);
       process.exit(1);
     }
@@ -23,10 +27,10 @@ var postLogin = function(req, res, callback) {
       res.status(200).json({data: 'success'});
     }
 
+    deferred.resolve();
   });
 
-  callback();
-
+  return deferred.promise;
 };
 
 module.exports = postLogin;

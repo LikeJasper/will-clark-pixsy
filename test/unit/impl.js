@@ -1,5 +1,11 @@
-var expect = require('chai').expect;
+var chai = require('chai');
+var expect = chai.expect;
+var chaiAsPromised = require('chai-as-promised');
 var sinon = require('sinon');
+var sinonChai = require('sinon-chai');
+
+chai.use(chaiAsPromised);
+chai.use(sinonChai);
 
 module.exports = {
 
@@ -13,12 +19,12 @@ module.exports = {
     res.status.returnsThis();
     res.json = function() {};
 
-    func(req, res, function() {
-      setTimeout(function() {
-        expect(res.status.calledWithExactly(statusCode)).to.equal(true);
+    expect(func(req, res)).to.be.fulfilled
+      .then(function() {
+        expect(res.status).to.have.been.calledWithExactly(statusCode);
         callback();
-      }, 10);
-    });
+      })
+      .done();
   },
 
   testJsonCalledWith: function(func, requestParams, obj, callback) {
@@ -30,13 +36,13 @@ module.exports = {
     res.status = function() { return this; };
     res.json = sinon.stub();
 
-    func(req, res, function() {
-      setTimeout(function() {
+    expect(func(req, res)).to.be.fulfilled
+      .then(function() {
         // .calledWithExactly does not require the very same object to evaluate to true
-        expect(res.json.calledWithExactly(obj)).to.equal(true);
+        expect(res.json).to.have.been.calledWithExactly(obj);
         callback();
-      }, 10);
-    });
+      })
+      .done();
   },
 
   testRenderCalledWith: function(func, templateName, callback) {
@@ -45,10 +51,12 @@ module.exports = {
 
     res.render = sinon.stub();
 
-    func(req, res, function() {
-      expect(res.render.calledWithExactly(templateName)).to.equal(true);
-      callback();
-    });
+    expect(func(req, res)).to.be.fulfilled
+      .then(function() {
+        expect(res.render).to.have.been.calledWithExactly(templateName);
+        callback();
+      })
+      .done();
   }
 
 };
