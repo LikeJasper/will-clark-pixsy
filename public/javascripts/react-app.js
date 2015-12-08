@@ -12,6 +12,7 @@
         errorMsg: null
       };
     },
+    // for displaying result from server
     getGroupClassName: function(groupName) {
       var className = "form-group";
       var valid = groupName === 'email' ? this.state.emailValid : this.state.passwordValid;
@@ -61,6 +62,7 @@
     handleSubmit: function(e) {
       e.preventDefault();
 
+      // do nothing if email or password is invalid
       if (this.state.emailValid && this.state.passwordValid) {
         var data = {email: this.state.email.trim(), password: this.state.password};
         $.ajax({
