@@ -24,6 +24,9 @@ module.exports = {
         expect(res.status).to.have.been.calledWithExactly(statusCode);
         callback();
       })
+      .catch(function(err) {
+        expect().fail(err);
+      })
       .done();
   },
 
@@ -42,6 +45,9 @@ module.exports = {
         expect(res.json).to.have.been.calledWithExactly(obj);
         callback();
       })
+      .catch(function(err) {
+        expect().fail(err);
+      })
       .done();
   },
 
@@ -55,6 +61,9 @@ module.exports = {
       .then(function() {
         expect(res.render).to.have.been.calledWithExactly(templateName);
         callback();
+      })
+      .catch(function(err) {
+        expect().fail(err);
       })
       .done();
   }
